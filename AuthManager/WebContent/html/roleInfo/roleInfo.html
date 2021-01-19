@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<link href="../../css/base.css" rel="stylesheet">
+		<link href="../../css/platform.css" rel="stylesheet">
+		<link rel="stylesheet" href="../../custom/uimaker/easyui.css">
+		<link rel="stylesheet" href="../../custom/uimaker/icon.css">
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+	    <script type="text/javascript" src="../../custom/jquery.easyui.min.js"></script>
+	    <script type="text/javascript" src="../../js/main.js"></script>
+	    <script type="text/javascript" src="../../custom/easyui-lang-zh_CN.js"></script>
+	</head>
+	
+	<!-- 角色信息数据网格datagrid列表 -->
+	<body>
+	   <table id="dgRoleInfo" data-options="fitColumns:true,pagination:true,fit:true,rownumbers:true,striped:true,
+	          toolbar:'#tb1',url:'../../roleInfo/findAllRoleInfo.action'" class="easyui-datagrid">
+		<thead>
+			<tr>
+			    <th data-options="field:'cb',checkbox:true" align="center"></th>
+				<th data-options="field:'role_code',width:50" align="center">角色编码</th>
+				<th data-options="field:'role_name',width:100" align="center">角色名称</th>
+				<th data-options="field:'createTime',width:100" align="center">创建时间</th>
+				<th data-options="field:'role_remark',width:100" align="center">备注</th>
+				
+			</tr>
+		</thead>
+	</table>
+	
+	<!-- 角色信息数据网格datagrid 按钮 Start 表头-->
+	    <div id="tb1">
+			<div class="opt-buttons" style="width:100%;">				
+					<a href="javascript:openRoleInfoAddDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加角色</a>				
+					<a href="javascript:openRoleInfoModifyDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">修改角色</a>		
+					<a href="javascript:deleteRoleInfo()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除角色</a>		
+					<a href="javascript:roleInfoMenu()" class="easyui-linkbutton" data-options="iconCls:'icon-roleManage',plain:true">分配菜单</a>	      		
+	      		<div class="conditions" style="float:right;margin-right: 20px">
+		     		<span class="con-span">用户名: </span>
+		     		<input type="text" name="s_roleName" id="s_roleName" size="20" onkeydown="if(event.keyCode==13) searchRoleInfo()"/>
+					<a href="javascript:searchRoleInfo()" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">搜索</a>
+				</div>
+	      	</div>
+		</div>
+		<!-- 角色信息数据表单dialog Start 新增角色 -->
+		 <div id="dlgRoleInfo" class="easyui-dialog" style="width: 560px;height: 330px;padding: 10px 20px" data-options="closed:true,buttons:'#dlg-buttons',modal:true">
+	     	<form id="fmRoleInfo" method="post">
+	           	<table cellspacing="5px">
+					<p><input type="hidden" id="role_id" name="role_id" /></p>
+					<tr style="height:80px">
+						<td>角色名称：</td>
+		      			<td>
+		      				<input type="text" id="role_name" name="role_name" class="easyui-validatebox" data-options="required:true"/>
+		      			</td>     	 				     	 		
+		      		</tr>
+					<tr style="height:100px">
+						<td>备注：</td>
+						<td colspan="4">
+		     				<textarea rows="7" cols="53" name="role_remark" id="role_remark"></textarea>
+		     			</td>
+					</tr>
+				</table>
+			</form>
+		</div>	
+		
+		<!-- 角色信息dialog的按钮 START -->
+		<div id="dlg-buttons">
+			<a href="javascript:saveRoleInfo()" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">保存</a>
+			<a href="javascript:closeRoleInfoDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a>
+		</div>
+		
+		<!-- 点击角色分配弹出角色信息数据表单dialog Start -->
+		<div id="dlgMenuInfo" class="easyui-dialog" style="width: 300px;height: 350px;padding: 10px 20px" data-options="closed:true,buttons:'#dlg-menubuttons',modal:true">
+			 <ul id="tree"></ul>
+	  	</div>
+	  	<!--点击角色分配弹出角色信息数据表单dialog END -->
+	  	
+	  	<!--角色信息数据表单dialog按钮 Start -->
+		<div id="dlg-menubuttons">
+	      	<a href="javascript:saveRoleAndMenu()" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">保存</a>
+	      	<a href="javascript:closeRoleAndMenu()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a>
+		</div> 
+		
+		<script type="text/javascript" src="../../js/roleInfo/roleInfo.js"></script>
+	</body>
+</html>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imti.dao.RoleInfoDao">
+
+    <!-- 查询角色 -->
+	<select id="findAllRoleInfoForUser" resultType="RoleInfo">
+		select
+		 	role_id,
+		 	role_name,
+		 	role_code,
+		 	role_state,
+		 	role_delflag,
+		 	opt_id,
+		 	createTime,
+		 	role_remark
+		 from 
+		 	t_roleInfo 
+		 where
+		 	role_delflag=0
+		 	order by createTime desc
+	</select>
+	
+	<!-- 查询用户所拥有的角色-->
+	<select id="findUserOwerRolesByUId" parameterType="int" resultType="Integer">
+		select
+			role_id
+		from
+			t_user_role
+		where
+			user_id=#{user_id}
+	</select>
+	
+	<!-- 查询及模糊查询、分页 -->	
+	<select id="findAllRoleInfo" parameterType="Map" resultType="RoleInfo">
+       select
+            role_id,
+            role_name,
+            role_code,
+            role_state,
+            role_delflag,
+            opt_id,
+            createTime,
+            role_remark
+       from 
+            t_roleInfo
+       where
+            role_delflag=0
+            <if test="s_roleName!=null">       
+                    and  role_name like concat('%',#{s_roleName},'%')
+           </if> 
+              order by createTime desc 
+              limit #{pageBean.start},#{pageBean.rows}
+	</select>
+	
+	<select id="findAllRoleInfoCount" parameterType="Map" resultType="int">
+		select
+		 	count(*)
+		 from 
+		 	t_roleInfo 
+		 where
+		 	role_delflag=0
+		<if test="s_roleName!=null">
+			and role_name like concat('%',#{s_roleName},'%')
+		</if>
+	</select>
+	
+	<!-- 查询总条数 -->
+	<select id="findroleNameIsExist" parameterType="String" resultType="int">
+	      select
+	            count(role_name)
+	      from 
+	            t_roleInfo
+	      where
+	           role_name=#{role_name}
+	</select>
+	
+	<insert id="addRoleInfo" parameterType="RoleInfo">
+	      insert into
+	            t_roleInfo(
+	               role_name,
+	               role_code,
+	               opt_id,
+	               role_remark
+	            )values(
+	               #{role_name},
+	               #{role_code},
+	               #{opt_id},
+	               #{role_remark}
+	            )
+	            
+	</insert>
+	
+	<update id="updateRoleInfo" parameterType="RoleInfo">
+	       update 
+	            t_roleInfo
+	       set  
+	            role_remark=#{role_remark}
+	       where
+	            role_id=#{role_id}
+	</update>
+	
+	<update id="deleteRoleInfo" parameterType="int" >
+	      update       
+	            t_roleInfo
+	      set
+	            role_delflag=1
+	      where
+	            role_id=#{role_id}
+	</update>
+	
+
+</mapper> 

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<link href="../../css/base.css" rel="stylesheet">
+		<link href="../../css/platform.css" rel="stylesheet">
+		<link rel="stylesheet" href="../../custom/uimaker/easyui.css">
+		<link rel="stylesheet" href="../../custom/uimaker/icon.css">
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+	    <script type="text/javascript" src="../../custom/jquery.easyui.min.js"></script>
+	    <script type="text/javascript" src="../../js/main.js"></script>
+	    <script type="text/javascript" src="../../custom/easyui-lang-zh_CN.js"></script>
+	</head>
+	<body>
+		<!-- 菜单树形结构treeGrid START -->
+		<table id="treeGridMenuInfo" class="easyui-treegrid"
+		    data-options="fitColumns:true,fit:true,rownumbers:true,toolbar:'#tbMenuButtons',url:'../../menuInfo/findAllMenuInfo.action',idField:'menu_id',treeField:'menu_name'">
+		    <thead>
+				<tr>
+					<th data-options="field:'ck',checkbox:true">菜单名称</th>
+					<th data-options="field:'menu_name',width:100,align:'center'">菜单名称</th>
+					<th data-options="field:'menu_url',width:100,align:'center'">菜单路径</th>
+					<th data-options="field:'menu_icon',width:100,align:'center',formatter:formatterIcon">菜单图标</th>
+					<th data-options="field:'menu_remark',width:100,align:'center'">备注</th>
+				</tr>
+		    </thead>
+		</table>
+		<!-- 菜单树形结构treeGrid END -->
+		
+		<!-- 菜单treegrid 按钮 Start 表头-->
+	    <div id="tbMenuButtons">
+			<div class="opt-buttons" style="width:100%;">				
+					<a href="javascript:openMenuInfoAddDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加菜单</a>				
+					<a href="javascript:openMenuInfoModifyDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">修改菜单</a>		
+					<a href="javascript:deleteMenuInfo()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除菜单</a>		
+	      		<div class="conditions" style="float:right;margin-right: 20px">
+		     		<span class="con-span">用户名: </span>
+		     		<input type="text" name="s_roleName" id="s_roleName" size="20" onkeydown="if(event.keyCode==13) searchRoleInfo()"/>
+					<a href="javascript:searchRoleInfo()" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">搜索</a>
+				</div>
+	      	</div>
+		</div>
+		<!-- 菜单treegrid 按钮 END 结束-->
+		
+		<!-- 用户信息数据表单dialog Start -->
+		<div id="dlgMenuInfo" class="easyui-dialog" style="width: 570px;height: 350px;padding: 10px 35px" data-options="closed:true,buttons:'#dlg-menuButtons',modal:true">
+	     	<form id="fmMenuInfo" method="post">
+	           	<table cellspacing="5px">
+					<p><input type="hidden" id="menu_id" name="menu_id" /></p>
+					<p><input type="hidden" id="parentId" name="parentId" /></p>
+					<tr style="height:30px">
+						<td>菜单名：</td>
+		      			<td>
+		      				<input type="text" id="menu_name" name="menu_name" class="easyui-validatebox" data-options="required:true"/>
+		      			</td>
+		     	 		<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		     	 		<td>路径：</td>
+		      			<td>
+		      				<input type="text" id="menu_url" name="menu_url" class="easyui-validatebox" data-options="required:true"/>
+		      			</td>
+		      		</tr>
+		      		<tr style="height:30px">
+						<td>图标：</td>
+		      			<td>
+		      				<input type="text" id="menu_icon" name="menu_icon" class="easyui-validatebox" data-options="required:true" value="icon-logg"/>
+		      			</td>
+		      		</tr>
+					<tr style="height:150px">
+						<td>备注：</td>
+						<td colspan="4">
+		     				<textarea rows="7" cols="53" name="menu_remark" id="menu_remark"></textarea></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<!--用户信息数据表单dialog END -->
+		
+		<!--用户信息数据表单dialog按钮 Start -->
+		<div id="dlg-menuButtons">
+	      	<a href="javascript:saveMenuInfo()" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">保存</a>
+	      	<a href="javascript:closeMenuInfoDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a>
+		</div> 
+		<!-- 用户信息数据表单dialog按钮 END -->
+		
+		<script type="text/javascript" src="../../js/menuInfo/menuInfo.js"></script>
+	</body>
+</html>

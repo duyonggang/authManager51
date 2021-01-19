@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+		<link rel="stylesheet" href="../../css/base.css"/>
+		<link rel="stylesheet" href="../../css/platform.css"/>
+		<link rel="stylesheet" href="../../custom/uimaker/easyui.css"/>
+		<link rel="stylesheet" href="../../custom/uimaker/icon.css"/>
+		<script type="text/javascript" src="../../custom/jquery.min.js"></script>
+		<script type="text/javascript" src="../../custom/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../../js/main.js"></script>
+		<script type="text/javascript" src="../../custom/easyui-lang-zh_CN.js"></script>
+	</head>
+	<body>
+		<!-- 用户信息数据网格datagrid Start -->
+		 <table id="dgUserInfo" data-options="fitColumns:true,pagination:true,fit:true,rownumbers:true,toolbar:'#tb',url:'../../userInfo/findAllUserInfo.action'" class="easyui-datagrid">
+	     	<thead>
+	     		<tr>
+					<th data-options="field:'cb',checkbox:true" align="center"></th>
+					<th data-options="field:'user_code',width:50" align="center">用户编号</th>
+					<th data-options="field:'user_name',width:100" align="center">用户姓名</th>
+					<th data-options="field:'user_nickName',width:100" align="center">昵称</th>
+					<th data-options="field:'user_pwd',width:100" align="center">密码</th>
+					<th data-options="field:'opt_id',width:100" align="center">操作人</th>
+					<th data-options="field:'user_remark',width:100" align="center">备注</th>
+				</tr>
+	  		 </thead>
+	  	</table>
+	</body>
+	
+	<!-- 用户信息数据网格datagrid END -->
+	  	
+  	<!-- 用户信息数据网格datagrid按钮 Start -->
+    <div id="tb">
+		<div class="opt-buttons" style="width:100%;">
+			<a href="javascript:openUserInfoAddDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">添加</a>
+			<a href="javascript:openUserInfoModifyDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true">修改</a>
+			<a href="javascript:deleteUserInfo()" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+			<a href="javascript:userInfoRole()" class="easyui-linkbutton" data-options="iconCls:'icon-roleManage',plain:true">分配角色</a>
+      		<div class="conditions" style="float:right;margin-right: 20px">
+	     		<span class="con-span">用户名: </span>
+	     		<input type="text" name="s_userName" id="s_userName" size="20" onkeydown="if(event.keyCode==13) searchUserInfo()"/>
+				<a href="javascript:searchUserInfo()" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true">搜索</a>
+			</div>
+      	</div>
+	</div>
+	<!-- 用户信息数据网格datagrid按钮 END -->
+		
+		
+	<!-- 用户信息数据表单dialog Start -->
+	<div id="dlgUserInfo" class="easyui-dialog" style="width: 570px;height: 350px;padding: 10px 20px" data-options="closed:true,buttons:'#dlg-buttons',modal:true">
+	     	<form id="fmUserInfo" method="post">
+	           	<table cellspacing="5px">
+					<p><input type="hidden" id="user_id" name="user_id" /></p>
+					<tr style="height:30px">
+						<td>用户名：</td>
+		      			<td>
+		      				<input type="text" id="user_name" name="user_name" class="easyui-validatebox" data-options="required:true"/>
+		      			</td>
+		     	 		<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		     	 		<td>用户密码：</td>
+		      			<td>
+		      				<input type="password" id="user_pwd" name="user_pwd" class="easyui-validatebox" data-options="required:true"/>
+		      			</td>
+		      		</tr>
+		      		<tr style="height:30px">
+						<td>昵称：</td>
+		      			<td>
+		      				<input type="text" id="user_nickName" name="user_nickName" class="easyui-validatebox" data-options="required:true"/>
+		      			</td>
+		      		</tr>
+					<tr style="height:150px">
+						<td>备注：</td>
+						<td colspan="4">
+		     				<textarea rows="7" cols="53" name="user_remark" id="user_remark"></textarea></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<!--用户信息数据表单dialog END -->
+	
+	
+	<!--用户信息数据表单dialog按钮 Start -->
+	<div id="dlg-buttons">
+      	<a href="javascript:saveUserInfo()" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">保存</a>
+      	<a href="javascript:closeUserInfoDialog()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a>
+	</div> 
+	<!-- 用户信息数据表单dialog按钮 END -->
+	
+	<!-- 点击角色分配弹出角色信息数据表单dialog Start -->
+	<div id="dlgRoleInfo" class="easyui-dialog" style="width: 570px;height: 350px;padding: 10px 20px" data-options="closed:true,buttons:'#dlg-buttons',modal:true">
+		 <table id="dgroleInfo" data-options="fitColumns:true,pagination:true,fit:true,rownumbers:true" class="easyui-datagrid">
+	     	<thead>
+	     		<tr>
+					<th data-options="field:'cb',checkbox:true" align="center"></th>
+					<th data-options="field:'role_code',width:50" align="center">角色编号</th>
+					<th data-options="field:'role_name',width:100" align="center">角色名称</th>
+					<th data-options="field:'createTime',width:100" align="center">创建时间</th>
+					<th data-options="field:'role_remark',width:100" align="center">备注</th>
+				</tr>
+	  		 </thead>
+	  	</table>
+  	</div>
+  	<!--点击角色分配弹出角色信息数据表单dialog END -->
+  	
+  	<!--角色信息数据表单dialog按钮 Start -->
+	<div id="dlg-buttons">
+      	<a href="javascript:saveUserAndRole()" class="easyui-linkbutton" data-options="iconCls:'icon-ok'">授权</a>
+      	<a href="javascript:closeUserAndRole()" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">关闭</a>
+	</div> 
+	<!-- 角色信息数据表单dialog按钮 END -->
+  	
+  	<script type="text/javascript" src="../../js/userInfo/uesrInfo.js"></script>
+	
+	</body>
+	
+	
+</html>

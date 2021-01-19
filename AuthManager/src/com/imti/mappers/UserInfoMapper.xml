@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imti.dao.UserInfoDao">
+	
+	<!-- 用户登录 -->
+	<select id="login" parameterType="UserInfo" resultType="UserInfo">
+		select
+			user_id,
+			user_code,
+			user_name,
+			user_nickName,
+			user_pwd,
+			user_state,
+			opt_id,
+			createTime,
+			user_remark
+		from
+			t_userInfo
+		<where>
+				user_state=0
+			and
+				user_delflag=0
+			and
+				user_name=#{user_name}
+			and
+				user_pwd=#{user_pwd} 
+				<!-- user_pwd=md5(concat(md5(#{user_pwd}),#{user_name})) -->
+		</where>
+	
+	</select>
+	
+	<!-- 查询及模糊查询、分页 -->	
+	<select id="findAllUserInfo" resultType="UserInfo" parameterType="Map">
+		select
+			user_id,
+			user_code,
+			user_name,
+			user_nickName,
+			user_pwd,
+			user_state,
+			opt_id,
+			createTime,
+			user_remark
+		from
+			t_userInfo
+		where
+			user_delflag=0
+		
+			<if test="s_userName!=null">
+				and user_name like concat('%',#{s_userName},'%')	
+			</if>
+			order by createTime desc
+			limit #{pageBean.start},#{pageBean.rows}
+	</select>
+	
+	<select id="findAllUserInfoCount" parameterType="Map" resultType="int">
+		select
+			count(*)
+		from
+			t_userInfo
+		where
+			user_delflag=0
+			<if test="s_userName!=null">
+				and user_name like concat('%',#{s_userName},'%')	
+			</if>
+	</select>
+	
+	<!-- 判断用户是否存在或重复 -->
+	<select id="findUserNameIsExist" parameterType="String" resultType="int">
+		select
+			count(user_name)
+		from
+			t_userInfo
+		where
+			user_name=#{user_name}
+	</select>
+	
+	<!-- 新增 -->
+	<insert id="addUserInfo" parameterType="UserInfo">
+		insert into
+			t_userInfo(
+				user_code,
+				user_name,
+				user_nickName,
+				user_pwd,
+			 	opt_id,
+				user_remark
+			)values(
+				#{user_code},
+				#{user_name},
+				#{user_nickName},
+				md5(concat(md5(#{user_pwd}),#{user_name})),
+				#{opt_id}, 
+				#{user_remark}
+			)
+	</insert>
+	
+	<!-- 通过ID查密码 -->
+	<select id="findPasswordByUserId" parameterType="int" resultType="String">
+		select
+			user_pwd
+		from
+			t_userInfo
+		where
+			user_id=#{user_id}
+	</select>
+	
+	<!-- 修改用户信息 -->
+	<update id="updateUserInfo" parameterType="UserInfo">
+		update
+			t_userInfo
+		set
+			user_nickName=#{user_nickName},
+			user_pwd=#{user_pwd},
+			user_remark=#{user_remark}
+		where
+			user_id=#{user_id}
+	</update>
+	
+	<!-- 删除用户信息 -->
+	<update id="deleteUserInfo" parameterType="int">
+		update
+			t_userInfo 
+		set
+			user_delflag=1  <!-- 将user_deflag改为1，表示处于已删除状态 -->
+		where 
+		 	user_id=#{user_id}
+	</update>
+	
+	
+	<insert id="insertUserAndRole" parameterType="Map">
+		insert into
+			t_user_role(
+				user_id,
+				role_id
+			)values(
+				#{user_id},
+				#{role_id}
+			)
+			
+	</insert>
+	
+	<!-- 删除用户拥有的角色 -->
+	<delete id="deleteUserOwerRoleByUid" parameterType="int">
+		delete from t_user_role where user_id=#{user_id}
+	</delete>
+
+</mapper> 
